@@ -1,0 +1,20 @@
+name: Run Python Script Daily
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Este cron se ejecutará todos los días a las 9:00 AM UTC
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest  # Ejecuta el script en una máquina Ubuntu
+    steps:
+      - uses: actions/checkout@v2  # Clona el repositorio
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Configura Python 3.x en la máquina
+      - name: Install dependencies
+        run: pip install -r requirements.txt  # Instala dependencias si tienes un archivo requirements.txt
+        continue-on-error: true  # Esta línea es opcional, para evitar que falle si no hay dependencias
+      - name: Run Python script
+        run: python New_home.py  # Ejecuta el script Python que subiste
