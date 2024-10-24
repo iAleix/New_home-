@@ -25,8 +25,8 @@ jobs:
 
       - name: Commit and push changes  # Añade este paso para hacer commit y push de los cambios en el Excel
         run: |
-          git config --local user.email "you@example.com"
-          git config --local user.name "Your Name"
+          git config --local user.email "aleix.borrella.colome@gmail.com"
+          git config --local user.name "Aleix"
           git add New_home.xlsx
           git commit -m "Update Excel with new data"
           git push
