@@ -1,8 +1,8 @@
-name: run prueba.py
+name: run New_home.py
 
 on:
   schedule:
-    - cron: '* 15 * * *'  # Este cron se ejecutará cada 5'
+    - cron: '* 10 * * *'  # Este cron se ejecutará cada 5'
 
 jobs:
   run-script:
@@ -21,7 +21,7 @@ jobs:
         continue-on-error: true  # Esta línea es opcional, para evitar que falle si no hay dependencias
 
       - name: Run Python script
-        run: python prueba.py  # Ejecuta el script Python que subiste
+        run: python New_home.py  # Ejecuta el script Python que subiste
 
       - name: Commit and push changes  # Añade este paso para hacer commit y push de los cambios en el Excel
         run: |
