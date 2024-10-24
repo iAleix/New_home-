@@ -2,19 +2,33 @@ name: run prueba.py
 
 on:
   schedule:
-    - cron: '* 15 * * *'  # Este cron se ejecutará cada 5'
+    - cron: '*/5 * * * *'  # Este cron se ejecutará cada 5'
 
 jobs:
   run-script:
     runs-on: ubuntu-latest  # Ejecuta el script en una máquina Ubuntu
+
     steps:
       - uses: actions/checkout@v2  # Clona el repositorio
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'  # Configura Python 3.x en la máquina
+
       - name: Install dependencies
         run: pip install -r requirements.txt  # Instala dependencias si tienes un archivo requirements.txt
         continue-on-error: true  # Esta línea es opcional, para evitar que falle si no hay dependencias
+
       - name: Run Python script
         run: python prueba.py  # Ejecuta el script Python que subiste
+
+      - name: Commit and push changes  # Añade este paso para hacer commit y push de los cambios en el Excel
+        run: |
+          git config --local user.email "you@example.com"
+          git config --local user.name "Your Name"
+          git add New_home.xlsx
+          git commit -m "Update Excel with new data"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Usa el token para autenticar y hacer push
