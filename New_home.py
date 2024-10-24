@@ -71,6 +71,7 @@ total_urls = len(urls_pisos)
 # Mostrem per pantalla la quantitat total de URLs de pisos obtingudes
 print(f"\n S'han pogut capturar {total_urls} URLs de pisos diferents")
 
+
 # Generem un dataframe buit amb les columnes dels diferents atributs que volem capturar de cada URL
 columnes = ['Estat', 'Data_captura', 'Plataforma', 'Referencia', 'Data_actualització', 'Diferencia_temps', 'Gap_1', 'Preu', 'Comunitat', 'Habitatge', 'Conservacio', 'Any', 'Ciutat', 'Barri', 'm2_constr', 'm2_utils', 'Planta', 'Ascensor', 'Habitacions', 'Banys', 'Orientacio', 'Jardi', 'Terrassa', 'Piscina', 'Garatge', 'Traster', 'URL']
 df_pisos = pd.DataFrame(columns=columnes)
@@ -192,6 +193,8 @@ for i, url in enumerate(urls_pisos, start=1):
 # Mostrem per pantalla per quantes URLs de les totals s'ha pogut capturar tota la informació
 print(f"\n URLs de pisos capturades: {total_urls} \n Nº de registres generats: {len(df_pisos)}")
 
+
+
 # Convertim la columna 'Any' en numèrica
 df_pisos['Any'] = pd.to_numeric(df_pisos['Any'], errors='coerce')
 
@@ -225,6 +228,8 @@ df_pisos['Preu/m2/any'] = df_pisos['Preu/m2'] / (1 + (coef * df_pisos['Temps']))
 # Finalment reemplaçem qualsevol valor NaN per guionets (-)
 df_pisos.fillna('-', inplace=True)
 
+
+
 # Definim una funció que calcula diferències de temps (en dies) entre dos dates
 def days_between(d1, d2):
     d1 = datetime.strptime(d1, "%Y-%m-%d")
@@ -232,7 +237,7 @@ def days_between(d1, d2):
     return abs((d2 - d1).days)
 
 # Definim la ruta on es troba l'arxiu Excel i el carreguem
-ruta_excel = '/Users/aleix/Desktop/Home/New home/New home.xlsx'
+ruta_excel = 'https://raw.githubusercontent.com/iAleix/New_home-/main/New_home.xlsx'
 book = load_workbook(ruta_excel)
 
 # Definim la pestanya on bolcar la informació i la carreguem
@@ -260,8 +265,11 @@ total_actualitzats = 0
 # Fem un contador per anotar quants pisos s'han vengut
 total_venuts = 0
 
+# Fem un contador per anotar quants pisos s'han reactivat
+total_reactivats = 0
+
 # Bloc de codi que actualitza l'estat de l'Excel dels pisos venuts
-for fila in range(6, sheet.max_row + 1):
+for fila in range(6, sheet.max_row):
     
     # Guardem la referència del pis associat a la fila que estem iterant
     referencia = sheet.cell(row=fila, column=5).value
@@ -287,7 +295,7 @@ for fila in range(6, sheet.max_row + 1):
         total_venuts += 1
 
 # Bloc de codi que actualitza la data dels pisos ja existents a l'Excel que segueixent apareixent a la web de SIP
-for fila in range(6, sheet.max_row + 1):
+for fila in range(6, sheet.max_row):
     
     # Guardem la referència del pis associat a la fila que estem iterant
     referencia = sheet.cell(row=fila, column=5).value
@@ -319,7 +327,7 @@ if not df_nuevos_pisos.empty:
     columna_b = sheet['B']
     
     # Busquem quina és la primera fila lliure de la columna definida anteriorment
-    primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None])
+    primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
     # Afegim els pisos que han aparegut nous a l'Excel a partir de la primera fila lliure disponible
     with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
@@ -335,10 +343,52 @@ if not df_nuevos_pisos.empty:
         cell.style = "Hyperlink"
 
     # I actualitzem el contador de pisos actualitzats
-    total_nous += 1    
+    total_nous += len(df_nuevos_pisos)    
         
 # Guardem els canvis fets
 book.save(ruta_excel)
-    
-print(f" Dels {len(df_pisos)} pisos obtinguts de la web de SIP: \n\n  - {total_nous} s'han afegit com a pisos nous a l'Excel. \n  - {total_actualitzats} simplement s'han actualitzat a l'Excel. \n\n Per altra banda, en l'Excel s'han marcat {total_venuts} pisos ja existents com a 'Venuts'")
 
+# Afegim un últim bloc que comprova si un pis que estava marcat com a 'Venut' s'ha reactivat
+if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
+    
+    for fila in range(6, sheet.max_row):
+    
+        # Guardem la referència del pis associat a la fila que estem iterant
+        referencia = sheet.cell(row=fila, column=5).value
+
+        # Guardem l'estat del pis associat a la fila que estem iterant    
+        valor_columna_B = sheet.cell(row=fila, column=2).value
+
+        # Si el pis estava marcat en l'Excel com a 'Venut' però segueix apareixent a la web, vol dir que l'han reactivat
+        if referencia in referencias_df and valor_columna_B == 'Venut':
+
+            # Marquem els pisos que ja estaven marcats com a 'Venut' amb una nova referència '_1' per a diferenciar-los
+            sheet.cell(row=fila, column=5).value = f"{referencia}_1"
+            
+            # Definim la columna a partir de la qual es bolcarà la nova informació
+            columna_b = sheet['B']
+
+            # Busquem quina és la primera fila lliure de la columna definida anteriorment
+            primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
+
+            # Afegim els pisos reactivats amb les noves dades
+            with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+                writer.book = book
+                writer.sheets = {ws.title: ws for ws in book.worksheets}
+                df_pisos[df_pisos['Referencia'] == referencia].to_excel(writer, sheet_name=hoja, startrow=primera_fila_vacia, startcol=1, index=False, header=False)
+
+            # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
+            for idx, url in enumerate(df_pisos[df_pisos['Referencia'] == referencia]['URL'], start=primera_fila_vacia + 1):
+                cell = sheet.cell(row=idx, column=29)
+                cell.value = "Aqui"
+                cell.hyperlink = url
+                cell.style = "Hyperlink"
+
+            # I actualitzem el contador de pisos reactivats
+            total_reactivats += 1
+            
+# Tornem a guardar els canvis fets
+book.save(ruta_excel)
+    
+# Mostrem els resultats per pantalla
+print(f" Dels {len(df_pisos)} pisos obtinguts de la web de SIP: \n\n  - {total_actualitzats} simplement s'han actualitzat a l'Excel. \n  - {total_nous} s'han afegit com a pisos nous a l'Excel. \n  - {total_reactivats} s'han reactivat a l'Excel. \n\n Per altra banda, en l'Excel s'han marcat {total_venuts} pisos ja existents com a 'Venuts'\n\n")
