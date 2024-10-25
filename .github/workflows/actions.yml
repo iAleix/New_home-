@@ -2,7 +2,7 @@ name: run New_home.py
 
 on:
   schedule:
-    - cron: '* 10 * * *'  # Este cron se ejecutará cada 5'
+    - cron: '*/5 * * * *'  # Este cron se ejecutará cada 5'
 
 jobs:
   run-script:
