@@ -1,6 +1,4 @@
-load_workbook
-datetime
-BeautifulSoup
+openpyxl
+beautifulsoup4
 pandas
 requests
-time
