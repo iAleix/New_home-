@@ -78,7 +78,7 @@ df_pisos = pd.DataFrame(columns=columnes)
 
 # Definim una funció per extreure el text de dins una etiqueta HTML
 def extraer_valor(soup, clase_caracteristica):
-    elemento = soup.find('span', text=clase_caracteristica)
+    elemento = soup.find('span', string=clase_caracteristica)
     if elemento:
         valor = elemento.find_next('span', class_='valor')
         return valor.get_text(strip=True) if valor else None
