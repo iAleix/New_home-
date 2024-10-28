@@ -237,7 +237,7 @@ def days_between(d1, d2):
     return abs((d2 - d1).days)
 
 # Definim la ruta on es troba l'arxiu Excel i el carreguem
-ruta_excel = 'https://raw.githubusercontent.com/iAleix/New_home-/main/New_home.xlsx'
+ruta_excel = 'https://github.com/iAleix/New_home-/raw/627da5ee33de71d090ea9900ce43056a0ce98e75/New%20home.xlsx'
 book = load_workbook(ruta_excel)
 
 # Definim la pestanya on bolcar la informació i la carreguem
