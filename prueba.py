@@ -13,7 +13,7 @@ import requests
 import time
 
 # Definim la ruta on es troba l'arxiu Excel i el carreguem
-ruta_excel = 'https://github.com/iAleix/New_home-/raw/112648ab436d7d3dd7a326695b7fbe47cd13f945/New_home.xlsx'
+ruta_excel = "New_home.xlsx"
 book = load_workbook(ruta_excel)
 
 # Definim la pestanya on bolcar la informació i la carreguem
