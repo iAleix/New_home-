@@ -25,6 +25,9 @@ jobs:
           pip install -r requirements.txt
         continue-on-error: true 
 
+      - name: Download Excel file
+        run: wget -O New_home.xlsx "https://github.com/iAleix/New_home-/raw/112648ab436d7d3dd7a326695b7fbe47cd13f945/New_home.xlsx"
+
       - name: Run Python script
         run: python prueba.py  # Ejecuta el script Python que subiste
 
