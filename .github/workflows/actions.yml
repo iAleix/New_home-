@@ -35,7 +35,8 @@ jobs:
         run: |
           git config --local user.email "aleix.borrella.colome@gmail.com"
           git config --local user.name "Aleix"
-          git add New_home.xlsx
+          git add New_home.xlsx  # Incluye el archivo original
+          git add New_home_*.xlsx  # Incluye la copia con fecha
           git commit -m "Update Excel with new data"
           git push
         env:
