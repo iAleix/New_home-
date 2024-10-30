@@ -389,6 +389,12 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
             
 # Tornem a guardar els canvis fets
 book.save(ruta_excel)
+
+# Calculem la data actual en format _YYYYMMDD
+fecha_actual = datetime.now().strftime("_%Y%m%d")
+
+# Fem una còpia de l'arxiu Excel afegint el sufix de la data
+book.save(f"New_home{fecha_actual}.xlsx")
     
 # Mostrem els resultats per pantalla
 print(f" Dels {len(df_pisos)} pisos obtinguts de la web de SIP: \n\n  - {total_actualitzats} simplement s'han actualitzat a l'Excel. \n  - {total_nous} s'han afegit com a pisos nous a l'Excel. \n  - {total_reactivats} s'han reactivat a l'Excel. \n\n Per altra banda, en l'Excel s'han marcat {total_venuts} pisos ja existents com a 'Venuts'\n\n")
