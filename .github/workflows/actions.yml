@@ -2,7 +2,7 @@ name: run New_home.py
 
 on:
   schedule:
-    - cron: '* 19 * * *'  # Este cron se ejecutará cada 5'
+    - cron: '*/5 * * * *'  # Este cron se ejecutará cada 5'
 
 jobs:
   run-script:
@@ -24,12 +24,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
         continue-on-error: true 
-
-      - name: Download Excel file
-        run: wget -O New_home.xlsx "https://github.com/iAleix/New_home-/raw/112648ab436d7d3dd7a326695b7fbe47cd13f945/New_home.xlsx"
-
+        
       - name: Run Python script
-        run: python New_home.py  # Ejecuta el script Python que subiste
+        run: python prueba.py  # Ejecuta el script Python que subiste
 
       - name: Commit and push changes  # Añade este paso para hacer commit y push de los cambios en el Excel
         run: |
