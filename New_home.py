@@ -270,6 +270,8 @@ total_venuts = 0
 # Fem un contador per anotar quants pisos s'han reactivat
 total_reactivats = 0
 
+print("A punt de loopejar")
+
 # Bloc de codi que actualitza l'estat de l'Excel dels pisos venuts
 for fila in range(6, sheet.max_row):
     
@@ -296,6 +298,8 @@ for fila in range(6, sheet.max_row):
         # I actualitzem el contador de pisos venguts
         total_venuts += 1
 
+print("Primer loop fet")
+
 # Bloc de codi que actualitza la data dels pisos ja existents a l'Excel que segueixent apareixent a la web de SIP
 for fila in range(6, sheet.max_row):
     
@@ -318,6 +322,8 @@ for fila in range(6, sheet.max_row):
         
         # I actualitzem el contador de pisos actualitzats
         total_actualitzats += 1
+
+print("Segon loop fet")
 
 # Filtrem el dataframe de pisos capturats de la web de SIP per mantenir només aquells que han aparegut nous
 df_nuevos_pisos = df_pisos[~df_pisos['Referencia'].isin(referencias_excel)]
@@ -346,9 +352,13 @@ if not df_nuevos_pisos.empty:
 
     # I actualitzem el contador de pisos actualitzats
     total_nous += len(df_nuevos_pisos)    
-        
+
+print("Tercer loop fet, previ a guardar excel")
+
 # Guardem els canvis fets
 book.save(ruta_excel)
+
+print("Excel guardat")
 
 # Afegim un últim bloc que comprova si un pis que estava marcat com a 'Venut' s'ha reactivat
 if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
@@ -388,9 +398,13 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
 
             # I actualitzem el contador de pisos reactivats
             total_reactivats += 1
-            
+
+print("Ultim loop fet, previ a guardar de nou")
+
 # Tornem a guardar els canvis fets
 book.save(ruta_excel)
+
+print("Ultima guardada normal")
 
 # Calculem la data actual en format _YYYYMMDD
 fecha_actual = datetime.now().strftime("_%Y%m%d")
