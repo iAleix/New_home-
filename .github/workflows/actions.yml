@@ -26,7 +26,7 @@ jobs:
         continue-on-error: true 
         
       - name: Run Python script
-        run: python prueba.py  # Ejecuta el script Python que subiste
+        run: python New_home.py  # Ejecuta el script Python que subiste
 
       - name: Commit and push changes  # Añade este paso para hacer commit y push de los cambios en el Excel
         run: |
