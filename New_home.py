@@ -193,7 +193,7 @@ for i, url in enumerate(urls_pisos, start=1):
 # Mostrem per pantalla per quantes URLs de les totals s'ha pogut capturar tota la informació
 print(f"\n URLs de pisos capturades: {total_urls} \n Nº de registres generats: {len(df_pisos)}")
 
-
+print("Totes les URLS capturades be")
 
 # Convertim la columna 'Any' en numèrica
 df_pisos['Any'] = pd.to_numeric(df_pisos['Any'], errors='coerce')
@@ -228,7 +228,7 @@ df_pisos['Preu/m2/any'] = df_pisos['Preu/m2'] / (1 + (coef * df_pisos['Temps']))
 # Finalment reemplaçem qualsevol valor NaN per guionets (-)
 df_pisos.fillna('-', inplace=True)
 
-
+print("A punt per cargar Excel")
 
 # Definim una funció que calcula diferències de temps (en dies) entre dos dates
 def days_between(d1, d2):
@@ -239,6 +239,8 @@ def days_between(d1, d2):
 # Definim la ruta on es troba l'arxiu Excel i el carreguem
 ruta_excel = "New_home.xlsx"
 book = load_workbook(ruta_excel)
+
+print("Excel carregat")
 
 # Definim la pestanya on bolcar la informació i la carreguem
 hoja = 'SIP'
