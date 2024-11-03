@@ -338,7 +338,7 @@ if not df_nuevos_pisos.empty:
     primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
     # Afegim els pisos que han aparegut nous a l'Excel a partir de la primera fila lliure disponible
-    with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='a') as writer:
+    with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
         writer.book = book
         writer.sheets = {ws.title: ws for ws in book.worksheets}
         df_nuevos_pisos.to_excel(writer, sheet_name=hoja, startrow=primera_fila_vacia, startcol=1, index=False, header=False)
@@ -384,7 +384,7 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
             primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
             # Afegim els pisos reactivats amb les noves dades
-            with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='a') as writer:
+            with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
                 writer.book = book
                 writer.sheets = {ws.title: ws for ws in book.worksheets}
                 df_pisos[df_pisos['Referencia'] == referencia].to_excel(writer, sheet_name=hoja, startrow=primera_fila_vacia, startcol=1, index=False, header=False)
