@@ -193,8 +193,6 @@ for i, url in enumerate(urls_pisos, start=1):
 # Mostrem per pantalla per quantes URLs de les totals s'ha pogut capturar tota la informació
 print(f"\n URLs de pisos capturades: {total_urls} \n Nº de registres generats: {len(df_pisos)}")
 
-print("Totes les URLS capturades be")
-
 # Convertim la columna 'Any' en numèrica
 df_pisos['Any'] = pd.to_numeric(df_pisos['Any'], errors='coerce')
 
@@ -228,8 +226,6 @@ df_pisos['Preu/m2/any'] = df_pisos['Preu/m2'] / (1 + (coef * df_pisos['Temps']))
 # Finalment reemplaçem qualsevol valor NaN per guionets (-)
 df_pisos.fillna('-', inplace=True)
 
-print("A punt per cargar Excel")
-
 # Definim una funció que calcula diferències de temps (en dies) entre dos dates
 def days_between(d1, d2):
     d1 = datetime.strptime(d1, "%Y-%m-%d")
@@ -239,8 +235,6 @@ def days_between(d1, d2):
 # Definim la ruta on es troba l'arxiu Excel i el carreguem
 ruta_excel = "New_home.xlsx"
 book = load_workbook(ruta_excel)
-
-print("Excel carregat")
 
 # Definim la pestanya on bolcar la informació i la carreguem
 hoja = 'SIP'
@@ -270,8 +264,6 @@ total_venuts = 0
 # Fem un contador per anotar quants pisos s'han reactivat
 total_reactivats = 0
 
-print("A punt de loopejar")
-
 # Bloc de codi que actualitza l'estat de l'Excel dels pisos venuts
 for fila in range(6, sheet.max_row):
     
@@ -297,8 +289,6 @@ for fila in range(6, sheet.max_row):
         
         # I actualitzem el contador de pisos venguts
         total_venuts += 1
-
-print("Primer loop fet")
 
 # Bloc de codi que actualitza la data dels pisos ja existents a l'Excel que segueixent apareixent a la web de SIP
 for fila in range(6, sheet.max_row):
@@ -326,8 +316,6 @@ for fila in range(6, sheet.max_row):
 # Filtrem el dataframe de pisos capturats de la web de SIP per mantenir només aquells que han aparegut nous
 df_nuevos_pisos = df_pisos[~df_pisos['Referencia'].isin(referencias_excel)]
 
-print("Segon loop fet")
-
 # Bloc de codi que apunta a l'Excel els pisos que han aparegut nous
 if not df_nuevos_pisos.empty:
     
@@ -353,12 +341,8 @@ if not df_nuevos_pisos.empty:
     # I actualitzem el contador de pisos actualitzats
     total_nous += len(df_nuevos_pisos)    
 
-print("Tercer loop fet, previ a guardar excel")
-
 # Guardem els canvis fets
 book.save(ruta_excel)
-
-print("Excel guardat")
 
 # Afegim un últim bloc que comprova si un pis que estava marcat com a 'Venut' s'ha reactivat
 if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
@@ -399,12 +383,8 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
             # I actualitzem el contador de pisos reactivats
             total_reactivats += 1
 
-print("Ultim loop fet, previ a guardar de nou")
-
 # Tornem a guardar els canvis fets
 book.save(ruta_excel)
-
-print("Ultima guardada normal")
 
 # Calculem la data actual en format _YYYYMMDD
 fecha_actual = datetime.now().strftime("_%Y%m%d")
