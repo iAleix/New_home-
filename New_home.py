@@ -326,10 +326,9 @@ if not df_nuevos_pisos.empty:
     primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
     # Afegim els pisos que han aparegut nous a l'Excel a partir de la primera fila lliure disponible
-    with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='w', if_sheet_exists='replace') as writer:
-        writer.book = book
-        writer.sheets = {ws.title: ws for ws in book.worksheets}
-        df_nuevos_pisos.to_excel(writer, sheet_name=hoja, startrow=primera_fila_vacia, startcol=1, index=False, header=False)
+    for row_index, row_data in enumerate(df_nuevos_pisos.values, start=primera_fila_vacia + 1):
+        for col_index, cell_value in enumerate(row_data, start=2):  # Comienza desde la columna B (index=1)
+            sheet.cell(row=row_index, column=col_index, value=cell_value)
 
     # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
     for idx, url in enumerate(df_nuevos_pisos['URL'], start=primera_fila_vacia + 1):
@@ -368,10 +367,9 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
             primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
             # Afegim els pisos reactivats amb les noves dades
-            with pd.ExcelWriter(ruta_excel, engine='openpyxl', mode='w', if_sheet_exists='replace') as writer:
-                writer.book = book
-                writer.sheets = {ws.title: ws for ws in book.worksheets}
-                df_pisos[df_pisos['Referencia'] == referencia].to_excel(writer, sheet_name=hoja, startrow=primera_fila_vacia, startcol=1, index=False, header=False)
+            for row_index, row_data in enumerate(df_pisos[df_pisos['Referencia'] == referencia].values, start=primera_fila_vacia + 1):
+                for col_index, cell_value in enumerate(row_data, start=2):  # Comienza desde la columna B (index=1)
+                    sheet.cell(row=row_index, column=col_index, value=cell_value)
 
             # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
             for idx, url in enumerate(df_pisos[df_pisos['Referencia'] == referencia]['URL'], start=primera_fila_vacia + 1):
