@@ -326,8 +326,8 @@ if not df_nuevos_pisos.empty:
     primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
     # Afegim els pisos que han aparegut nous a l'Excel a partir de la primera fila lliure disponible
-    for row_index, row_data in enumerate(df_nuevos_pisos.values, start=primera_fila_vacia + 1):
-        for col_index, cell_value in enumerate(row_data, start=2):  # Comienza desde la columna B (index=1)
+    for row_index, row_data in enumerate(df_nuevos_pisos.values, start=primera_fila_vacia):
+        for col_index, cell_value in enumerate(row_data, start=2): 
             sheet.cell(row=row_index, column=col_index, value=cell_value)
 
     # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
@@ -367,8 +367,8 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
             primera_fila_vacia = len([cell for cell in columna_b if cell.value is not None]) + 1
 
             # Afegim els pisos reactivats amb les noves dades
-            for row_index, row_data in enumerate(df_pisos[df_pisos['Referencia'] == referencia].values, start=primera_fila_vacia + 1):
-                for col_index, cell_value in enumerate(row_data, start=2):  # Comienza desde la columna B (index=1)
+            for row_index, row_data in enumerate(df_pisos[df_pisos['Referencia'] == referencia].values, start=primera_fila_vacia):
+                for col_index, cell_value in enumerate(row_data, start=2):  
                     sheet.cell(row=row_index, column=col_index, value=cell_value)
 
             # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
