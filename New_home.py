@@ -331,7 +331,7 @@ if not df_nuevos_pisos.empty:
             sheet.cell(row=row_index, column=col_index, value=cell_value)
 
     # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
-    for idx, url in enumerate(df_nuevos_pisos['URL'], start=primera_fila_vacia + 1):
+    for idx, url in enumerate(df_nuevos_pisos['URL'], start=primera_fila_vacia):
         cell = sheet.cell(row=idx, column=29)
         cell.value = "Aqui"
         cell.hyperlink = url
@@ -372,7 +372,7 @@ if len(df_pisos) != total_nous + total_actualitzats + total_venuts:
                     sheet.cell(row=row_index, column=col_index, value=cell_value)
 
             # Canviem les URLs afegides a l'Excel per hipervincles associats a la paraula 'Aqui' perquè sigui més visual
-            for idx, url in enumerate(df_pisos[df_pisos['Referencia'] == referencia]['URL'], start=primera_fila_vacia + 1):
+            for idx, url in enumerate(df_pisos[df_pisos['Referencia'] == referencia]['URL'], start=primera_fila_vacia):
                 cell = sheet.cell(row=idx, column=29)
                 cell.value = "Aqui"
                 cell.hyperlink = url
