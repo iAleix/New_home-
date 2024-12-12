@@ -16,8 +16,11 @@ jobs:
         with:
           python-version: '3.9'  # Configura Python 3.x en la máquina
       
+      - name: Update apt-get  # Paso para actualizar los repositorios
+        run: sudo apt-get update
+
       - name: Install distutils
-        run: sudo apt-get install python3-distutils
+        run: sudo apt-get install -y python3-distutils  # Instala distutils sin solicitar confirmación
 
       - name: Install dependencies
         run: |
