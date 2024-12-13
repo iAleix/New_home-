@@ -2,11 +2,11 @@ name: run New_home.py
 
 on:
   schedule:
-    - cron: '* 20 * * *'  # Este cron se ejecutará cada 5'
+    - cron: '*/5 * * * *'  # Este cron se ejecutará cada 5'
 
 jobs:
   run-script:
-    runs-on: ubuntu-latest  # Ejecuta el script en una máquina Ubuntu
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2  # Clona el repositorio
